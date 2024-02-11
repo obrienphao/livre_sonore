@@ -23,8 +23,38 @@
 #include "xc.h"
 #include <stdint.h>
 #include "DFPlayer.h"
-//#include "adcVolume.h"
+#include "adcVolume.h"
 //#include "uartCom.h"
+
+//------------------------
+
+#define VAL1 1
+#define VAL2 2
+#define VAL3 3
+#define VAL4 4
+#define VAL5 5
+#define VAL6 6
+#define VAL7 7
+#define VAL8 8
+#define VAL9 9
+#define VAL10 10
+#define VAL11 11
+#define VAL12 12
+#define VAL13 13
+#define VAL14 14
+#define VAL15 15
+
+
+
+
+
+//-------------------------
+uint16_t pot_value = 0;
+uint8_t mapped_value = 0;
+uint8_t volumePrevious = 0;
+#define AN9_POTAR 1001 
+
+uint8_t map[1] = {0};
 
 void ledOn() {
     LATBbits.LATB5 = 1;
@@ -34,10 +64,34 @@ void ledOff() {
     LATBbits.LATB5 = 0;
 }
 
+void volumeChange() {
+    // Configurer l'ADC
+    pot_value = read_potentiometer(AN9_POTAR);
+    //uart_write_char('1');
+    mapped_value = map_to_range(pot_value, 0, 1023, 0, 30);
+    // map[0] = mapped_value;
+    if (mapped_value == 0xF8) {
+
+    } else {
+        if ((volumePrevious == mapped_value) ||
+                (mapped_value - 1 == volumePrevious) ||
+                (mapped_value + 1 == volumePrevious)) {
+            //rien faire
+        } else {
+            volumePrevious = mapped_value;
+            volume(mapped_value);
+            //write(map, 1);
+        }
+
+    }
+
+}
+
 int main(void) {
 
     //uint8_t _sending[] = {0x7E, 0xFF, 0x06, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0xEF};
     // Configure pins
+    /*
     AD1PCFGbits.PCFG0 = 1; // Configure AN0 as digital input
     AD1PCFGbits.PCFG1 = 1; // defi,ir par defaut comme input
 
@@ -46,8 +100,8 @@ int main(void) {
 
     AD1PCFGbits.PCFG4 = 1;
     AD1PCFGbits.PCFG5 = 1;
-
-
+     */
+    AD1PCFG = 0xFFFF;
     //Input config
     TRISAbits.TRISA0 = 1; // Set RA0 as input
     TRISAbits.TRISA1 = 1; // Set RA1 as input
@@ -66,11 +120,13 @@ int main(void) {
     TRISBbits.TRISB8 = 0; // RP8 as output (TX)
     //TRISBbits.TRISB9 = 1; // RP9 as input (RX)
 
-   
+    //Configurer l'ADC
+    adc_init();
+
 
     while (1) {
 
-       // volumeChange();
+        volumeChange();
 
         if (PORTAbits.RA0 == 0) {
             ledOn();

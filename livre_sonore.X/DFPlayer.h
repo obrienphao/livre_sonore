@@ -67,7 +67,6 @@ The stack command is sent as follows:
 
 
 extern uint8_t _sending[DFPLAYER_SEND_LENGTH];
-
 void initDFPLayer();
 void volumUp();
 void volumDown();
@@ -83,7 +82,7 @@ uint16_t calculateCheckSum(uint8_t *buffer);
 void uart_write();
 void enableACK();
 void disableACK();
-void volumeChange();
+//void volumeChange();
 
 #endif	/* XC_HEADER_TEMPLATE_H */
 

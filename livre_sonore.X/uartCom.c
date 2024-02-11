@@ -62,3 +62,8 @@ uint8_t read(void) {
     while (!U1STAbits.URXDA); // Wait until data is available in U1RXREG
     return U1RXREG;
 }
+
+void uart_write_char(char data) {
+    while (!U1STAbits.TRMT); // Attendre que le registre U1TXREG soit vide
+    U1TXREG = data; // Écrire le caractère dans le registre de transmission
+}

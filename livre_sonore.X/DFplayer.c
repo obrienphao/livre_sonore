@@ -9,19 +9,16 @@
 #include "DFplayer.h"
 #include "uartCom.h"
 #include "xc.h"
-#include "adcVolume.h"
+//#include "adcVolume.h"
 
 
 uint8_t _sending[DFPLAYER_SEND_LENGTH] = {0x7E, 0xFF, 06, 00, 01, 00, 00, 00, 00, 0xEF};
 
-uint16_t pot_value =0;
-uint8_t mapped_value =0;
 
 void initDFPLayer() {
 
     uart1_init();
-    //Configurer l'ADC
-    //adc_init();
+   
 }
 
 void volumUp() {
@@ -39,12 +36,7 @@ void volume(uint8_t volume) {
 
 }
 
-void volumeChange() {
-    // Configurer l'ADC
-    pot_value = read_potentiometer();
-    mapped_value = map_to_range(pot_value, 0, 1023, 0, 30);
-    volume(mapped_value);
-}
+
 
 void pause() {
     singleCmd(0x0E);

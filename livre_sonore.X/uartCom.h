@@ -39,6 +39,7 @@
 void uart1_init(void);
 void write(uint8_t *buffer,uint8_t length );
 uint8_t read(void);
+void uart_write_char(char data);
 
 
 #endif	/* XC_HEADER_TEMPLATE_H */

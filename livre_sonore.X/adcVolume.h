@@ -32,5 +32,5 @@
 #include <stdint.h>
 
 void adc_init();
-uint16_t read_potentiometer();
+uint16_t read_potentiometer(int ch);
 uint8_t map_to_range(uint16_t value, uint16_t in_min, uint16_t in_max, uint8_t out_min, uint8_t out_max);
